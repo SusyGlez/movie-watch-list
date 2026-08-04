@@ -77,17 +77,16 @@ function renderMovieInfo(iData) {
 }
 
 function addMovieToWatchlist() {
-  console.log("antes del push:", watchlistArray);
-  let watchlistArray = watchlistArray.push(movie);
-  console.log("después del push:", watchlistArray);
-  localStorage.setItem("myWatchlist", JSON.stringify(watchlistArray));
+  const savedWatchlist = JSON.parse(localStorage.getItem("myWatchlist")) || [];
+  savedWatchlist.push(movie);
+  localStorage.setItem("myWatchlist", JSON.stringify(savedWatchlist));
 }
 
 if (watchlistContainer) {
   const savedList = JSON.parse(localStorage.getItem("myWatchlist")) || [];
   watchlistContainer.innerHTML = "";
   savedList.forEach((movie) => {
-    watchlistContainer.innerHTML = `
+    watchlistContainer.innerHTML += `
       <img src="${movie.Poster}"/>
       <div>
         <h3>${movie.Title}</h3>
