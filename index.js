@@ -2,62 +2,41 @@ const moviesContainer = document.getElementById("movies-container");
 const searchInput = document.getElementById("search-input");
 const searchForm = document.getElementById("search-form");
 let movieList = [];
-let movie = [];
 let movieArray = [];
-let watchlistArray = [];
-let watchlistContainer = document.getElementById("watchlist-container");
+let movie = null;
+const watchlistContainer = document.getElementById("watchlist-container");
 
-searchForm.addEventListener("submit", function getRequest(event) {
-  let input = searchInput.value;
-  event.preventDefault();
+if (searchForm) {
+  searchForm.addEventListener("submit", function getRequest(event) {
+    let input = searchInput.value;
+    event.preventDefault();
 
-  // fetch sData
-  fetch(`http://www.omdbapi.com/?s=${input}&apikey=a3e59872`)
-    .then((response) => response.json())
-    .then((sData) => {
-      console.log(sData);
+    // fetch sData
+    fetch(`http://www.omdbapi.com/?s=${input}&apikey=a3e59872`)
+      .then((response) => response.json())
+      .then((sData) => {
+        console.log(sData);
 
-      movieList = sData.Search;
-      moviesContainer.innerHTML = null;
+        movieList = sData.Search;
+        moviesContainer.innerHTML = null;
 
-      if (movieList && movieList.length > 0) {
-        renderMovielist();
-      } else {
-        moviesContainer.textContent = "Sorry, we couldn't find that movie :(";
-      }
-    });
-});
-
-// fetch tData
+        if (movieList && movieList.length > 0) {
+          renderMovielist();
+        } else {
+          moviesContainer.textContent = "Sorry, we couldn't find that movie :(";
+        }
+      });
+  });
+}
+// fetch iData
 
 function logMovie(id) {
   fetch(`http://www.omdbapi.com/?i=${id}&apikey=a3e59872`)
     .then((response) => response.json())
-    .then((tData) => {
-      console.log("tdata", tData);
-
-      movie = tData;
-
-      moviesContainer.innerHTML = `
-      <img src="${tData.Poster}"/>
-      <div>
-        <h3>${tData.Title}</h3>
-        <div>
-          <img src="./images/star-icon.png"/>
-          <p>${tData.imdbRating}</p>
-        </div>
-      </div>
-      <div>
-        <p>${tData.Runtime}</p>
-        <p>${tData.Genre}</p>
-        <div>
-          <button onclick="addMovieToWatchlist()"><img src="./images/plus-icon.png"/></button>
-          <p>Watchlist</p>
-        </div>
-      </div>
-      <p>${tData.Plot}</p>
-      <button id="arrow-btn" onclick="renderMovielist()"> <- </button>
-      `;
+    .then((iData) => {
+      console.log("idata", iData);
+      movie = iData;
+      renderMovieInfo(iData);
     });
 }
 
@@ -74,33 +53,60 @@ function renderMovielist() {
   );
 }
 
-function addMovieToWatchlist(addedMovie) {
-  localStorage.setItem("myWatchlist", JSON.stringify(watchlistArray));
+function renderMovieInfo(iData) {
+  moviesContainer.innerHTML = `
+        <img src="${iData.Poster}"/>
+        <div>
+          <h3>${iData.Title}</h3>
+          <div>
+            <img src="./images/star-icon.png"/>
+            <p>${iData.imdbRating}</p>
+          </div>
+        </div>
+        <div>
+          <p>${iData.Runtime}</p>
+          <p>${iData.Genre}</p>
+          <div>
+            <button onclick="addMovieToWatchlist()"><img src="./images/plus-icon.png"/></button>
+            <p>Watchlist</p>
+          </div>
+        </div>
+        <p>${iData.Plot}</p>
+        <button id="arrow-btn" onclick="renderMovielist()"> <- </button>
+        `;
+}
 
-  watchlistContainer = null;
-  if (watchlistArray && watchlistArray.length > 0) {
-    localStorage.getItem("myWatchlist");
-    watchlistArray.push(movie);
-    watchlistContainer.innerHTML *= `<img src="${tData.Poster}"/>
+function addMovieToWatchlist() {
+  console.log("antes del push:", watchlistArray);
+  let watchlistArray = watchlistArray.push(movie);
+  console.log("después del push:", watchlistArray);
+  localStorage.setItem("myWatchlist", JSON.stringify(watchlistArray));
+}
+
+if (watchlistContainer) {
+  const savedList = JSON.parse(localStorage.getItem("myWatchlist")) || [];
+  watchlistContainer.innerHTML = "";
+  savedList.forEach((movie) => {
+    watchlistContainer.innerHTML = `
+      <img src="${movie.Poster}"/>
       <div>
-        <h3>${tData.Title}</h3>
+        <h3>${movie.Title}</h3>
         <div>
           <img src="./images/star-icon.png"/>
-          <p>${tData.imdbRating}</p>
+          <p>${movie.imdbRating}</p>
         </div>
       </div>
       <div>
-        <p>${tData.Runtime}</p>
-        <p>${tData.Genre}</p>
+        <p>${movie.Runtime}</p>
+        <p>${movie.Genre}</p>
         <div>
-          <button onclick="addMovieToWatchlist()"><img src="./images/plus-icon.png"/></button>
-          <p>Watchlist</p>
+          <button onclick="removeMovieFromWatchlist()"><img src="./images/subtract-icon.png"/></button>
+          <p>Remove</p>
         </div>
       </div>
-      <p>${tData.Plot}</p>
-      <button id="arrow-btn" onclick="renderMovielist()"> <- </button>
+      <p>${movie.Plot}</p>
       `;
-  }
+  });
 }
 
 //el usuario escribe el título de la película que quiere encontrar en un input de búsqueda.
