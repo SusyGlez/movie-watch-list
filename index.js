@@ -108,6 +108,44 @@ if (watchlistContainer) {
   });
 }
 
+function removeMovieFromWatchlist(movie) {
+  const currentList = JSON.parse(localStorage.getItem("myWatchlist"));
+  if (currentList) {
+    currentList.pop(movie);
+
+    watchlistContainer.innerHTML = "";
+    currentList.forEach((movie) => {
+      watchlistContainer.innerHTML += `
+      <img src="${movie.Poster}"/>
+      <div>
+        <h3>${movie.Title}</h3>
+        <div>
+          <img src="./images/star-icon.png"/>
+          <p>${movie.imdbRating}</p>
+        </div>
+      </div>
+      <div>
+        <p>${movie.Runtime}</p>
+        <p>${movie.Genre}</p>
+        <div>
+          <button onclick="removeMovieFromWatchlist()"><img src="./images/subtract-icon.png"/></button>
+          <p>Remove</p>
+        </div>
+      </div>
+      <p>${movie.Plot}</p>
+      `;
+    });
+  } else if ((currentList.length = 0)) {
+    watchlistContainer.innerHTML = `
+      <h2>Your watchlist is looking a little empty...</h2>
+      <div>
+        <button onclick="goToHomePage()"><img src="./images/plus-icon.png" /></button>
+        <span>Let's add some movies!</span>
+      </div>`;
+  }
+  localStorage.setItem("myWatchlist", JSON.stringify(currentList));
+}
+
 //el usuario escribe el título de la película que quiere encontrar en un input de búsqueda.
 //Al hacer click en el botón de buscar, el fetch debe buscar en la API (a través de la API key que ya tengo) el título o títulos relacionados con lo que busca el usuario y entregar esa respuesta a través de data.
 //El parámetro de búsqueda usado será "s".
