@@ -1,24 +1,22 @@
 const moviesContainer = document.getElementById("movies-container");
 const searchInput = document.getElementById("search-input");
 const searchForm = document.getElementById("search-form");
-let movieList = [];
-let movieArray = [];
-let movie = null;
 const watchlistContainer = document.getElementById("watchlist-container");
+let movieList = [];
+let movie = null;
 
 if (searchForm) {
   searchForm.addEventListener("submit", function getRequest(event) {
-    let input = searchInput.value;
     event.preventDefault();
+    let input = searchInput.value;
 
-    // fetch sData
     fetch(`http://www.omdbapi.com/?s=${input}&apikey=a3e59872`)
       .then((response) => response.json())
       .then((sData) => {
         console.log(sData);
 
         movieList = sData.Search;
-        moviesContainer.innerHTML = null;
+        moviesContainer.innerHTML = "";
 
         if (movieList && movieList.length > 0) {
           renderMovielist();
@@ -28,7 +26,6 @@ if (searchForm) {
       });
   });
 }
-// fetch iData
 
 function logMovie(id) {
   fetch(`http://www.omdbapi.com/?i=${id}&apikey=a3e59872`)
@@ -41,16 +38,16 @@ function logMovie(id) {
 }
 
 function renderMovielist() {
-  moviesContainer.innerHTML = null;
+  moviesContainer.innerHTML = "";
   movieList.forEach(
-    (movie) =>
-      (moviesContainer.innerHTML += `
-              <button class="movie-btn" data-imdb-id="${movie.imdbID}" onclick="logMovie('${movie.imdbID}')">
+    (movie) => {
+      moviesContainer.innerHTML += `
+              <button class="movie-btn" data-imdb-id="${movie.imdbID}">
               <img src="${movie.Poster}" />
               <h3>${movie.Title}</h3>
               <span>${movie.Year}</span>
-              </button>`),
-  );
+              </button>`
+});
 }
 
 function renderMovieInfo(iData) {
@@ -67,54 +64,40 @@ function renderMovieInfo(iData) {
           <p>${iData.Runtime}</p>
           <p>${iData.Genre}</p>
           <div>
-            <button onclick="addMovieToWatchlist()"><img src="./images/plus-icon.png"/></button>
+            <button data-add="${iData.imdbID}"><img src="./images/plus-icon.png"/></button>
             <p>Watchlist</p>
           </div>
         </div>
         <p>${iData.Plot}</p>
-        <button id="arrow-btn" onclick="renderMovielist()"> <- </button>
+        <button id="arrow-btn" data-back="true"> <- </button>
         `;
 }
 
-function addMovieToWatchlist() {
-  const savedWatchlist = JSON.parse(localStorage.getItem("myWatchlist")) || [];
-  savedWatchlist.push(movie);
-  localStorage.setItem("myWatchlist", JSON.stringify(savedWatchlist));
-}
+// function addMovieToWatchlist() {
+//   const savedWatchlist = JSON.parse(localStorage.getItem("myWatchlist")) || [];
+//   savedWatchlist.push(movie);
+//   localStorage.setItem("myWatchlist", JSON.stringify(savedWatchlist));
+// }
 
-if (watchlistContainer) {
-  const savedList = JSON.parse(localStorage.getItem("myWatchlist")) || [];
-  watchlistContainer.innerHTML = "";
-  savedList.forEach((movie) => {
-    watchlistContainer.innerHTML += `
-      <img src="${movie.Poster}"/>
-      <div>
-        <h3>${movie.Title}</h3>
-        <div>
-          <img src="./images/star-icon.png"/>
-          <p>${movie.imdbRating}</p>
-        </div>
-      </div>
-      <div>
-        <p>${movie.Runtime}</p>
-        <p>${movie.Genre}</p>
-        <div>
-          <button onclick="removeMovieFromWatchlist()"><img src="./images/subtract-icon.png"/></button>
-          <p>Remove</p>
-        </div>
-      </div>
-      <p>${movie.Plot}</p>
-      `;
-  });
-}
+// if (watchlistContainer) {
+//   const savedList = JSON.parse(localStorage.getItem("myWatchlist")) || [];
+  function renderWatchlist() {
+    if(!watchlistContainer) return;
 
-function removeMovieFromWatchlist(movie) {
-  const currentList = JSON.parse(localStorage.getItem("myWatchlist"));
-  if (currentList) {
-    currentList.pop(movie);
+    const saveList = JSON.parse(localStorage.getItem("myWatchlist")) || [];
+
+    if (savedList.length === 0) {
+    watchlistContainer.innerHTML = `
+      <h2>Your watchlist is looking a little empty...</h2>
+      <div>
+        <button data-home="true"><img src="./images/plus-icon.png" /></button>
+        <span>Let's add some movies!</span>
+      </div>`;
+      return;
+  }
 
     watchlistContainer.innerHTML = "";
-    currentList.forEach((movie) => {
+    savedList.forEach((movie) => {
       watchlistContainer.innerHTML += `
       <img src="${movie.Poster}"/>
       <div>
@@ -128,23 +111,33 @@ function removeMovieFromWatchlist(movie) {
         <p>${movie.Runtime}</p>
         <p>${movie.Genre}</p>
         <div>
-          <button onclick="removeMovieFromWatchlist()"><img src="./images/subtract-icon.png"/></button>
+          <button><img src="./images/subtract-icon.png" data-remove="${movie.imdbID}"/></button>
           <p>Remove</p>
         </div>
       </div>
       <p>${movie.Plot}</p>
       `;
     });
-  } else if ((currentList.length = 0)) {
-    watchlistContainer.innerHTML = `
-      <h2>Your watchlist is looking a little empty...</h2>
-      <div>
-        <button onclick="goToHomePage()"><img src="./images/plus-icon.png" /></button>
-        <span>Let's add some movies!</span>
-      </div>`;
   }
-  localStorage.setItem("myWatchlist", JSON.stringify(currentList));
-}
+
+  renderWatchlist();
+
+// function removeMovieFromWatchlist(movie) {
+//   const currentList = JSON.parse(localStorage.getItem("myWatchlist"));
+//   if (currentList) {
+//     currentList.pop(movie);
+//     localStorage.setItem("myWatchlist", JSON.stringify(currentList));
+//     renderWatchlist();
+//   } else if (currentList.length === 0) {
+//     watchlistContainer.innerHTML = "";
+//     watchlistContainer.innerHTML = `
+//       <h2>Your watchlist is looking a little empty...</h2>
+//       <div>
+//         <button onclick="goToHomePage()"><img src="./images/plus-icon.png" /></button>
+//         <span>Let's add some movies!</span>
+//       </div>`;
+//   }
+// }
 
 //el usuario escribe el título de la película que quiere encontrar en un input de búsqueda.
 //Al hacer click en el botón de buscar, el fetch debe buscar en la API (a través de la API key que ya tengo) el título o títulos relacionados con lo que busca el usuario y entregar esa respuesta a través de data.
@@ -158,3 +151,28 @@ function removeMovieFromWatchlist(movie) {
 //En esta sección también habrá un botón de "<-" para volver un paso atrás en el proceso y volver a la lista simple de películas. La información del array de resultados del fetch se guardarán una variable "currentResults = [], así es como se podrá regresar a la lista simple de resultados.
 //El botón de búsqueda permanecerá deshabilitado hasta que el usuario escriba algo en la barra de búsqueda.
 //Si el API falla en entregar un resultado, deberá salir un mensaje de error en medio de la pantalla que diga "Sorry, we couldn't find a movie or show", o algo parecido.
+
+document.addEventListener("click", function (e) {
+  const addBtn = e.target.closest("[data-add]");
+  if (addBtn) {
+    const savedWatchlist = JSON.parse(localStorage.getItem("myWatchlist")) || [];
+    savedWatchlist.push(movie)
+    localStorage.setItem("myWatchlist", JSON.stringify(savedWatchlist));
+    return;
+  }
+
+  const removeBtn = e.target.closest("[data-remove]");
+  if (removeBtn) {
+    const id = removeBtn.dataset.remove;
+    let currentList = JSON.parse(localStorage.getItem("myWatchlist")) || [];
+    currentList = currentList.filter((movie) => movie.imdbID !== id);
+    localStorage.setItem("myWatchlist", JSON.stringify(currentList));
+    renderWatchlist();
+    return;
+  }
+
+  const backBtn = e.target.closest("[data-back]");
+  if(backBtn) {
+    renderMovielist();
+    return;
+  }
