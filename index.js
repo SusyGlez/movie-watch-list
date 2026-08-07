@@ -77,7 +77,7 @@ function renderWatchlist() {
 
   const saveList = JSON.parse(localStorage.getItem("myWatchlist")) || [];
 
-  if (savedList.length === 0) {
+  if (saveList.length === 0) {
     watchlistContainer.innerHTML = `
       <h2>Your watchlist is looking a little empty...</h2>
       <div>
@@ -88,7 +88,7 @@ function renderWatchlist() {
   }
 
   watchlistContainer.innerHTML = "";
-  savedList.forEach((movie) => {
+  saveList.forEach((movie) => {
     watchlistContainer.innerHTML += `
       <img src="${movie.Poster}"/>
       <div>
@@ -141,7 +141,7 @@ document.addEventListener("click", function (e) {
 
   const movieBtn = e.target.closest(".movie-btn");
   if (movieBtn) {
-    logMovie(movieBtn.dataset.imdbID);
+    logMovie(movieBtn.dataset.imdbId);
   }
 });
 
