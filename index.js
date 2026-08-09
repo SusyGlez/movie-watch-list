@@ -42,10 +42,12 @@ function renderMovielist() {
   moviesContainer.innerHTML = "";
   movieList.forEach((movie) => {
     moviesContainer.innerHTML += `
-              <button class="movie-btn" data-imdb-id="${movie.imdbID}">
-              <img src="${movie.Poster}" />
-              <h3>${movie.Title}</h3>
-              <span>${movie.Year}</span>
+              <button class="movie-btn flex flex-row border-b-[#2c2c2c] border-b w-lg py-3" data-imdb-id="${movie.imdbID}">
+              <img class="w-20" src="${movie.Poster}" />
+              <div class="flex flex-col pl-5 items-start justify-center text-[#ffff]">
+                <h3 class="text-xl">${movie.Title}</h3>
+                <span class="text-base">${movie.Year}</span>
+              </div>
               </button>`;
   });
 }
