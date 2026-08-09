@@ -27,6 +27,7 @@
     --text-2xl--line-height: calc(2 / 1.5);
     --text-5xl: 3rem;
     --text-5xl--line-height: 1;
+    --font-weight-bold: 700;
     --font-weight-extrabold: 800;
     --radius-md: 0.375rem;
     --default-font-family: var(--font-sans);
@@ -320,6 +321,12 @@
   .gap-0 {
     gap: 0px;
   }
+  .gap-2\.5 {
+    gap: calc(var(--spacing) * 2.5);
+  }
+  .gap-5 {
+    gap: calc(var(--spacing) * 5);
+  }
   .self-baseline {
     align-self: baseline;
   }
@@ -416,9 +423,19 @@
     font-size: var(--text-xl);
     line-height: var(--tw-leading, var(--text-xl--line-height));
   }
+  .font-bold {
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
   .font-extrabold {
     --tw-font-weight: var(--font-weight-extrabold);
     font-weight: var(--font-weight-extrabold);
+  }
+  .text-\[\#2E2E2F\] {
+    color: #2E2E2F;
+  }
+  .text-\[\#787878\] {
+    color: #787878;
   }
   .text-\[\#a5a5a5\] {
     color: #a5a5a5;
