@@ -4,31 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
+    <link href="./output.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"
+    />
+
     <title>Movie Watch List</title>
   </head>
-  <body>
-    <div>
-      <h1>Find your film</h1>
-      <a href="./watchlist.html">My Watchlist</a>
-    </div>
-    <div id="search-container">
-      <form id="search-form">
-        <input
-          id="search-input"
-          type="text"
-          placeholder="Blade Runner"
-          name="search"
-        />
-        <button class="search-btn" type="submit">
-          search
-          <i class="fa fa-search"></i>
-        </button>
-      </form>
-    </div>
-    <div id="movies-container">
-      <h2>Start exploring</h2>
-      <img src="./images/film-icon.png" />
-    </div>
+  <body class="bg-slate-900">
+    <main class="bg-[#121212] text-white min-h-screen max-w-150 mx-auto">
+      <div class="bg-image h-50 flex flex-col justify-center items-center">
+        <div class="flex justify-between items-center w-full p-15 mt-10">
+          <h1 class="text-5xl font-extrabold">Find your film</h1>
+          <a class="self-end" href="./watchlist.html">My Watchlist</a>
+        </div>
+        <div id="search-container">
+          <form id="search-form" class="flex gap-0 relative">
+            <div
+              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+            >
+              <i class="fa fa-search text-[#a5a5a5] text-xl"></i>
+            </div>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Blade Runner"
+              name="search"
+              class="bg-[#2e2e2e] p-2.5 rounded-l-md w-80 text-xl pl-12 pr-4 py-2"
+            />
+            <button
+              class="search-btn bg-[#4b4b4b] p-2.5 rounded-r-md w-44 text-xl"
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+      <div
+        class="flex flex-col items-center pt-52 text-xl"
+        id="movies-container"
+      >
+        <h2 class="text-xl">Start exploring</h2>
+        <img src="./images/film-icon.png" class="w-20" />
+      </div>
+    </main>
     <script src="index.js"></script>
   </body>
 </html>

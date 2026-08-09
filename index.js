@@ -21,7 +21,8 @@ if (searchForm) {
         if (movieList && movieList.length > 0) {
           renderMovielist();
         } else {
-          moviesContainer.textContent = "Sorry, we couldn't find that movie :(";
+          moviesContainer.textContent =
+            "Unable to find what you’re looking for. Please try another search.";
         }
       });
   });
