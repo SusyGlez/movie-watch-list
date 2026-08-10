@@ -419,6 +419,9 @@
   .border-b-gray-600 {
     border-bottom-color: var(--color-gray-600);
   }
+  .bg-\[\#1c1c1c\] {
+    background-color: #1c1c1c;
+  }
   .bg-\[\#2e2e2e\] {
     background-color: #2e2e2e;
   }
@@ -434,8 +437,17 @@
   .bg-\[A5A5A5\] {
     background-color: A5A5A5;
   }
+  .bg-black {
+    background-color: var(--color-black);
+  }
   .bg-gray-400 {
     background-color: var(--color-gray-400);
+  }
+  .bg-gray-600 {
+    background-color: var(--color-gray-600);
+  }
+  .bg-gray-900 {
+    background-color: var(--color-gray-900);
   }
   .bg-slate-900 {
     background-color: var(--color-slate-900);
