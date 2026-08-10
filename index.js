@@ -53,6 +53,17 @@ function renderMovielist() {
 }
 
 function renderMovieInfo(iData) {
+  const savedWatchlist = JSON.parse(localStorage.getItem("myWatchlist")) || [];
+  const alreadySaved = savedWatchlist.some((m) => m.imdbID === iData.imdbID);
+
+  let watchlistBtnHtml;
+
+  if (alreadySaved) {
+    watchlistBtnHtml = `<button data-add="${iData.imdbID}" class="cursor-pointer"><i class="fa-solid fa-circle-check"></i></button>`;
+  } else {
+    watchlistBtnHtml = `<button data-add="${iData.imdbID}" class="cursor-pointer"><img src="./images/plus-icon.png"/></button>`;
+  }
+
   moviesContainer.innerHTML = `
         <img class="w-2xs mb-4" src="${iData.Poster}"/>
         <div class="flex flex-col text-white justify-between mb-4 max-w-md">
@@ -66,7 +77,7 @@ function renderMovieInfo(iData) {
           <p>${iData.Runtime}</p>
           <p class="w-60 text-center">${iData.Genre}</p>
           <div class="flex flex-row gap-2.5 items-center justify-center">
-            <button data-add="${iData.imdbID}" class="cursor-pointer"><img src="./images/plus-icon.png"/></button>
+            ${watchlistBtnHtml}
             <p>Watchlist</p>
           </div>
         </div>
@@ -123,10 +134,16 @@ document.addEventListener("click", function (e) {
   if (addBtn) {
     const savedWatchlist =
       JSON.parse(localStorage.getItem("myWatchlist")) || [];
-    savedWatchlist.push(movie);
-    localStorage.setItem("myWatchlist", JSON.stringify(savedWatchlist));
+
+    const alreadyExist = savedWatchlist.some((m) => m.imdbID === movie.imdbID);
+
+    if (alreadyExist) {
+      console.log("This movie is already in your watchlist");
+    } else {
+      savedWatchlist.push(movie);
+      localStorage.setItem("myWatchlist", JSON.stringify(savedWatchlist));
+    }
     addBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
-    addBtn.disabled = true;
     return;
   }
 
