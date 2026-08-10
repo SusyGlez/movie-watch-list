@@ -54,24 +54,26 @@ function renderMovielist() {
 
 function renderMovieInfo(iData) {
   moviesContainer.innerHTML = `
-        <img src="${iData.Poster}"/>
-        <div>
-          <h3>${iData.Title}</h3>
-          <div>
-            <img src="./images/star-icon.png"/>
-            <p>${iData.imdbRating}</p>
+        <img class="w-2xs mb-4" src="${iData.Poster}"/>
+        <div class="flex flex-col text-white justify-between mb-4 max-w-md">
+          <h3 class="font-bold text-2xl text-center">${iData.Title}</h3>
+          <div class="flex flex-row gap-2.5 items-center justify-center">
+            <img class="object-none w-fit" src="./images/star-icon.png"/>
+            <p class="text-base">${iData.imdbRating}</p>
           </div>
         </div>
-        <div>
+        <div class="text-white text-base w-md flex flex-row justify-between items-center mb-4">
           <p>${iData.Runtime}</p>
-          <p>${iData.Genre}</p>
-          <div>
-            <button data-add="${iData.imdbID}"><img src="./images/plus-icon.png"/></button>
+          <p class="w-60 text-center">${iData.Genre}</p>
+          <div class="flex flex-row gap-2.5 items-center justify-center">
+            <button data-add="${iData.imdbID}" class="cursor-pointer"><img src="./images/plus-icon.png"/></button>
             <p>Watchlist</p>
           </div>
         </div>
-        <p>${iData.Plot}</p>
-        <button id="arrow-btn" data-back="true"> <- </button>
+        <div class="flex flex-col w-md gap-2.5 mb-4">
+          <p class="text-lg text-white">${iData.Plot}</p>
+          <button id="arrow-btn" data-back="true" class="cursor-pointer self-end"><i class="fa-solid fa-circle-arrow-left text-white text-[28px] hover:text-gray-500"></i></button>
+        </div>
         `;
 }
 
@@ -123,6 +125,8 @@ document.addEventListener("click", function (e) {
       JSON.parse(localStorage.getItem("myWatchlist")) || [];
     savedWatchlist.push(movie);
     localStorage.setItem("myWatchlist", JSON.stringify(savedWatchlist));
+    addBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+    addBtn.disabled = true;
     return;
   }
 
