@@ -95,34 +95,43 @@ function renderWatchlist() {
 
   if (saveList.length === 0) {
     watchlistContainer.innerHTML = `
-      <h2>Your watchlist is looking a little empty...</h2>
-      <div>
+    <div class="flex flex-col items-center border-b-transparent">
+      <h2 class="font-bold">Your watchlist is looking a little empty...</h2>
+      <div class="flex flex-row gap-2.5 items-center justify-center mt-4">
         <a href="./index.html"><img src="./images/plus-icon.png" /></a>
-        <span>Let's add some movies!</span>
-      </div>`;
+        <span class="text-white font-bold">Let's add some movies!</span>
+      </div>
+    </div>`;
     return;
   }
 
   watchlistContainer.innerHTML = "";
   saveList.forEach((movie) => {
     watchlistContainer.innerHTML += `
-      <img src="${movie.Poster}"/>
-      <div>
-        <h3>${movie.Title}</h3>
-        <div>
-          <img src="./images/star-icon.png"/>
-          <p>${movie.imdbRating}</p>
+    <div class="flex flex-center gap-4 border-b-[#2c2c2c] border-b">
+      <img class="w-30 mb-4 object-contain" src="${movie.Poster}"/>
+
+      <div class="flex flex-col text-white w-full w-sm mb-4 mt-4">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="font-bold text-2xl">${movie.Title}</h3>
+          <div class="flex flex-row gap-2.5 items-center">
+            <img class="w-fit" src="./images/star-icon.png"/>
+            <p class="text-base">${movie.imdbRating}</p>
+          </div>
         </div>
-      </div>
-      <div>
+
+        <div class="text-base w-sm flex flex-row justify-between items-center mb-4">
         <p>${movie.Runtime}</p>
-        <p>${movie.Genre}</p>
-        <div>
-          <button><img src="./images/subtract-icon.png" data-remove="${movie.imdbID}"/></button>
+        <p class="w-60 text-center">${movie.Genre}</p>
+        <div class="flex flex-row gap-2.5 items-center">
+          <button class="cursor-pointer"><img src="./images/subtract-icon.png" data-remove="${movie.imdbID}"/></button>
           <p>Remove</p>
         </div>
+        </div>
+
+        <p class="text-lg text-white mb-4">${movie.Plot}</p>
       </div>
-      <p>${movie.Plot}</p>
+    </div>
       `;
   });
 }
