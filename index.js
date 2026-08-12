@@ -10,7 +10,7 @@ if (searchForm) {
     event.preventDefault();
     let input = searchInput.value;
 
-    fetch(`http://www.omdbapi.com/?s=${input}&apikey=a3e59872`)
+    fetch(`https://www.omdbapi.com/?s=${input}&apikey=a3e59872`)
       .then((response) => response.json())
       .then((sData) => {
         console.log(sData);
@@ -29,7 +29,7 @@ if (searchForm) {
 }
 
 function logMovie(id) {
-  fetch(`http://www.omdbapi.com/?i=${id}&apikey=a3e59872`)
+  fetch(`https://www.omdbapi.com/?i=${id}&apikey=a3e59872`)
     .then((response) => response.json())
     .then((iData) => {
       console.log("idata", iData);
